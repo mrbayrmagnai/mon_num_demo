@@ -1,0 +1,141 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Тоог бичвэрт хөрвүүлэх javascript ийн цогц сан юм">
+    <meta name="keywords" content="Тоо, бичвэр, текст">
+    <meta name="author" content="Bayarmagnai">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тоог бичвэрт хөрвүүлэх</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+    <script src="mon_num.min.js"></script>
+    <style>
+        .right-item {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .top {
+            text-align: center;
+            margin-top: 44px;
+            margin-bottom: 2px;
+        }
+
+        .top2 {
+            text-align: center;
+        }
+
+        .top3 {
+
+            margin-bottom: 24px;
+        }
+
+        #input {
+            width: calc(100% - 29px);
+            max-width: 485px;
+            margin-bottom: 12px;
+        }
+
+        .result {
+            margin-top: 38px;
+            width: 100%;
+            text-align: center;
+            max-width: 485px;
+            background: #dadada;
+        }
+
+        .result p {
+            padding-left: 4px;
+            padding-right: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <h1 class="top">mon_num</h1>
+        <h5 class="top2">Тоог монгол хэлний бичвэрт хөрвүүлэх javascript ийн сан</h1>
+            <a class="top3" href="https://github.com/mrbayrmagnai/mon_num">github</a>
+            <input id="input" onInput="onChange()" type="number" placeholder="Энд тоогоо оруулна уу"></input>
+            <div style="display: grid;grid-template-columns: 1fr 1fr;">
+                <label for="sf1-check" class="doc">Латин</label>
+                <div class="right-item">
+                    <input onchange="onChange()" type="checkbox" autocomplete="off" id="latin" class="doc">
+                </div>
+                <label for="sf1-check" class="doc">Эхний үсэг томоор</label>
+                <div class="right-item">
+                    <input onchange="onChange()" type="checkbox" autocomplete="off" id="ucFirst" class="doc">
+                </div>
+                <label for="sf1-check" class="doc">Бүх үсэг томоор</label>
+                <div class="right-item">
+                    <input onchange="onChange()" type="checkbox" autocomplete="off" id="upperCase" class="doc">
+                </div>
+                <label for="sf1-check" class="doc">Дагавар</label>
+
+                <div class="right-item">
+                    <select id="suffix" class="doc" onchange="onChange()">
+                        <option value="no" class="doc">дагавар авахгүй</option>
+                        <option value="n" class="doc">"н" дагавар</option>
+                        <option value="dugaar" class="doc">"дугаар" дагавар</option>
+                        <option value="dahi" class="doc">"дахь" дагавар</option>
+                        <option value="iin" class="doc">"ны" дагавар</option>
+                    </select>
+                </div>
+            </div>
+            <div class="result">
+                <p id="text">
+
+                </p>
+            </div>
+    </div>
+</body>
+
+<script>
+    function getCheckboxVal(id) {
+        const latinFound = document.querySelector(`#${id}:checked`)
+        return !!latinFound
+    }
+    function onChange() {
+        const element = document.getElementById('input')
+        const suffix = document.getElementById('suffix')
+
+
+        const latin = getCheckboxVal('latin')
+        const ucFirst = getCheckboxVal('ucFirst')
+        const upperCase = getCheckboxVal('upperCase')
+        const suffixVal = suffix.value
+        let options = undefined
+        if (latin) {
+            options = { latin: true }
+        }
+        if (ucFirst) {
+            if (typeof options === 'object') {
+                options.ucFirst = true
+            } else {
+                options = { ucFirst: true }
+            }
+        }
+        if (upperCase) {
+            if (typeof options === 'object') {
+                options.upperCase = true
+            } else {
+                options = { upperCase: true }
+            }
+        }
+        if (suffixVal !== 'no') {
+            if (typeof options === 'object') {
+                options.suffix = suffixVal
+            } else {
+                options = { suffix: suffixVal }
+            }
+        }
+        const value = toWords(parseInt(element.value), options)
+        const textElem = document.getElementById('text')
+        if (textElem) [
+            textElem.innerHTML = value
+        ]
+
+    }
+</script>
+
+</html>
